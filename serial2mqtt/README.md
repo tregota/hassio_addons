@@ -1,0 +1,18 @@
+# Serial to MQTT Bridge Addon
+
+This addon listens for JSON data on a given serial device and passes it to the installed MQTT broker.
+If the JSON data has an id field then that id is added to the topic path e.g: "serial/{id}".
+A timestamp is added if missing from the JSON data.
+If configured to send ack, will write 1 back to the serial interface for every recieved valid JSON.
+
+**In configuration.yaml, you can manually add entities like this for the metrics you want to keep track of**  
+```
+mqtt:
+  sensor:
+    - name: "Doorbell Battery"
+      unique_id: "doorbell.battery"
+      state_topic: "serial/doorbell"
+      unit_of_measurement: "%"
+      value_template: "{{ value_json.batterylevel }}"
+      device_class: "battery"
+```
