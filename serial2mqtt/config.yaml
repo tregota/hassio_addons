@@ -1,8 +1,8 @@
 name: "Serial to MQTT"
-version: "0.1.0"
+version: "0.1.1"
 slug: "serial2mqtt"
 description: >-
-  Reads JSON data from a serial device and passes it to MQTT
+  Reads JSON data from a serial device and passes it to installed MQTT broker.
 url: "https://github.com/tregota/hassio_addons/serial2mqtt"
 startup: services
 arch:
@@ -12,13 +12,13 @@ arch:
   - armv7
   - i386
 init: false
-# uart: true
 services:
   - "mqtt:need"
 options:
   serial_device: null
   baudrate: 115200
   mqtt_base_topic: serial
+  mqtt_sub_topic_field: id
   mqtt_retain: true
   send_ack: false
   debug: false
@@ -26,6 +26,7 @@ schema:
   serial_device: device(subsystem=tty)
   baudrate: int
   mqtt_base_topic: str
+  mqtt_sub_topic_field: str
   mqtt_retain: bool
   send_ack: bool
   debug: bool

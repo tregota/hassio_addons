@@ -4,7 +4,7 @@
 
 ## Installation
 
-Add the repository URL under **Supervisor → Add-on store → ⋮ → Manage add-on repositories**:
+Add the repository URL under **Add-ons → Add-on store → ⋮ → Repositories**:
 
     https://github.com/tregota/hassio_addons
 

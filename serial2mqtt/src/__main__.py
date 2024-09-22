@@ -9,6 +9,7 @@ from serial import Serial, SerialException
 SERIAL_DEVICE = os.environ['SERIAL_DEVICE']
 BAUDRATE = int(os.environ['BAUDRATE'])
 MQTT_TOPIC = os.environ['MQTT_TOPIC']
+MQTT_SUB_TOPIC_FIELD = os.environ['MQTT_SUB_TOPIC_FIELD']
 MQTT_RETAIN = os.environ['MQTT_RETAIN'] == "true"
 MQTT_HOST = os.environ['MQTT_HOST']
 MQTT_PORT = int(os.environ['MQTT_PORT'])
@@ -44,8 +45,8 @@ def listen_to_serial(serial: Serial, mqtt_client: mqtt.Client):
                 data = json.loads(line)
                 if SEND_ACK:
                     serial.write(1) # send ack
-                if "id" in data:
-                    topic = f'{MQTT_TOPIC}/{data["id"]}'
+                if MQTT_SUB_TOPIC_FIELD in data:
+                    topic = f'{MQTT_TOPIC}/{data[MQTT_SUB_TOPIC_FIELD]}'
                 else:
                     topic = MQTT_TOPIC
                 if "timestamp" not in data:
