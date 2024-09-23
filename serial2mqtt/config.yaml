@@ -1,5 +1,5 @@
 name: "Serial to MQTT"
-version: "0.1.1"
+version: "0.1.2"
 slug: "serial2mqtt"
 description: >-
   Reads JSON data from a serial device and passes it to installed MQTT broker.

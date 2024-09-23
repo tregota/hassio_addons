@@ -15,6 +15,8 @@ export MQTT_PASSWORD=$(bashio::services "mqtt" "password")
 export MQTT_HOST=$(bashio::services "mqtt" "host")
 export MQTT_PORT=$(bashio::services "mqtt" "port")
 
+set -e
+
 bashio::log.blue "Running Serial to MQTT.."
 
 bashio::log.info "Serial Device =" $SERIAL_DEVICE
