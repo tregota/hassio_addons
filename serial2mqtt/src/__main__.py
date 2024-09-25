@@ -19,6 +19,9 @@ MQTT_PASSWORD = os.environ['MQTT_PASSWORD']
 SEND_ACK = os.environ['SEND_ACK'] == "true"
 DEBUG = os.environ['DEBUG'] == "true"
 
+ACK = b'\x06'
+NACK = b'\x025'
+
 if DEBUG:
     LOGLEVEL = os.environ.get('LOGLEVEL', 'DEBUG').upper()
 else:
@@ -29,7 +32,7 @@ mqtt_connected = False
 def listen_to_serial(serial: Serial, mqtt_client: mqtt.Client):
     global mqtt_connected
     while True:
-        line: str = serial.readline().decode('utf-8').strip()
+        line: str = serial.readline().decode('utf-8', errors="replace").strip()
         if line == "":
             continue
         if line.startswith("ERROR:"):
@@ -39,14 +42,14 @@ def listen_to_serial(serial: Serial, mqtt_client: mqtt.Client):
             logging.warning(f"Message '{line}' lost due to missing MQTT connection.")
             if SEND_ACK:
                 logging.debug("Sending negative ack to serial device")
-                serial.write(b'-') # send negative ack
+                serial.write(NACK) # send negative ack
             continue
         try:
             timestamp = datetime.now().isoformat()
             data = json.loads(line)
             if SEND_ACK:
                 logging.debug("Sending ack to serial device")
-                serial.write(b'+') # send ack
+                serial.write(ACK)
             if MQTT_SUB_TOPIC_FIELD in data:
                 topic = f'{MQTT_TOPIC}/{data[MQTT_SUB_TOPIC_FIELD]}'
             else:
